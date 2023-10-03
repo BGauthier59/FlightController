@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Task = System.Threading.Tasks.Task;
 
-public class UIManager : MonoSingleton<UIManager>
+public class LobbyUIManager : MonoSingleton<LobbyUIManager>
 {
     [Serializable]
     public struct PlayerDataGUI
