@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -6,7 +5,6 @@ using UnityEngine.InputSystem;
 public class ConnectionManager : MonoSingleton<ConnectionManager>
 {
     [SerializeField] private Transform[] spawnZones;
-    [SerializeField] private float startHoldTime;
 
     [SerializeField] private List<PlayerController> players;
     
@@ -25,11 +23,10 @@ public class ConnectionManager : MonoSingleton<ConnectionManager>
 
     private void AllPlayerJoined()
     {
-        Debug.Log("all player joined");
         UIManager.instance.AllPlayerConnect();
         foreach (var player in players)
         {
-            player.SetReadyToStart();
+            player.SetReadyToHold();
         }
     }
 
@@ -43,13 +40,21 @@ public class ConnectionManager : MonoSingleton<ConnectionManager>
         // Plays feedbacks
         foreach (var pc in players)
         {
-            pc.ExitLobby();
+            pc.HoldCompleted();
         }
 
         UIManager.instance.ExitLobbyGUI();
-        await PostProcessManager.instance.SwitchVolume(1, 1);
+        await PostProcessManager.instance.SwitchVolume(.5f, 1);
         await LobbyCameraManager.instance.MoveToBookmark(1, 1);
-        
-        Debug.Log("cool");
+        PostProcessManager.instance.SwitchVolume(1, 0);
+        foreach (var pc in players)
+        {
+            pc.SetReadyToSelect();
+        }
+    }
+
+    public PlayerController[] GetPlayers()
+    {
+        return players.ToArray();
     }
 }
