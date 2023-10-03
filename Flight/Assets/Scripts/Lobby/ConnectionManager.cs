@@ -7,7 +7,7 @@ public class ConnectionManager : MonoSingleton<ConnectionManager>
     [SerializeField] private Transform[] spawnZones;
 
     [SerializeField] private List<PlayerController> players;
-    
+
     public void OnPlayerJoined(PlayerInput input)
     {
         int number = PlayerInputManager.instance.playerCount - 1;
@@ -23,7 +23,7 @@ public class ConnectionManager : MonoSingleton<ConnectionManager>
 
     private void AllPlayerJoined()
     {
-        UIManager.instance.AllPlayerConnect();
+        LobbyUIManager.instance.AllPlayerConnect();
         foreach (var player in players)
         {
             player.SetReadyToHold();
@@ -43,10 +43,12 @@ public class ConnectionManager : MonoSingleton<ConnectionManager>
             pc.HoldCompleted();
         }
 
-        UIManager.instance.ExitLobbyGUI();
+        LobbyUIManager.instance.ExitLobbyGUI();
         await PostProcessManager.instance.SwitchVolume(.5f, 1);
         await LobbyCameraManager.instance.MoveToBookmark(1, 1);
-        PostProcessManager.instance.SwitchVolume(1, 0);
+
+        await PostProcessManager.instance.SwitchVolume(.5f, 0);
+
         foreach (var pc in players)
         {
             pc.SetReadyToSelect();

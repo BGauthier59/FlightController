@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -19,7 +20,6 @@ public class PlayerController : MonoBehaviour
         if (isWaitingToHold) RefreshStartGauge(Time.deltaTime);
     }
     
-
     #region Input Action Events
 
     public void OnMove(InputAction.CallbackContext ctx)
@@ -55,13 +55,30 @@ public class PlayerController : MonoBehaviour
 
     #region Lobby
 
-    public void OnJoined(Vector3 initPos, int index)
+    public async void OnJoined(Vector3 initPos, int index)
     {
         this.index = index;
+
+        Vector3 finalPos = initPos;
+        initPos += Vector3.up * 10;
+        
+        transform.eulerAngles = Vector3.up * 180;
+        
         transform.position = initPos;
         isWaitingToHold = false;
         isSelectingLevel = false;
-        UIManager.instance.PlayerConnect(index);
+        LobbyUIManager.instance.PlayerConnect(index);
+
+        float timer = 0;
+
+        while (timer < 1)
+        {
+            transform.position = Ex.CubicBeziersCurve(initPos, initPos, finalPos, finalPos, timer);
+            await Task.Yield();
+            timer += Time.deltaTime;
+        }
+
+        transform.position = finalPos;
     }
 
     private void RefreshStartGauge(float delta)
@@ -69,7 +86,7 @@ public class PlayerController : MonoBehaviour
         if (!isHolding) delta = -delta;
         holdTimer += delta * holdSpeed;
         holdTimer = math.clamp(holdTimer, 0, 1);
-        UIManager.instance.RefreshReadyGaugeGUI(index, holdTimer);
+        LobbyUIManager.instance.RefreshReadyGaugeGUI(index, holdTimer);
 
         // We only check on player 1
         if (index == 0)
@@ -109,7 +126,6 @@ public class PlayerController : MonoBehaviour
 
     public void ToDo()
     {
-        
     }
 
     #endregion
