@@ -40,7 +40,7 @@ public class ConnectionManager : MonoSingleton<ConnectionManager>
             if (!pc.IsHoldingComplete()) return;
         }
 
-        // Starts Game
+        // Plays feedbacks
         foreach (var pc in players)
         {
             pc.ExitLobby();
@@ -48,7 +48,8 @@ public class ConnectionManager : MonoSingleton<ConnectionManager>
 
         UIManager.instance.ExitLobbyGUI();
         await PostProcessManager.instance.SwitchVolume(1, 1);
+        await LobbyCameraManager.instance.MoveToBookmark(1, 1);
         
-        Debug.Log("ok");
+        Debug.Log("cool");
     }
 }
