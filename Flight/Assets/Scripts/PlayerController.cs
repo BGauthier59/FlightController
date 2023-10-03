@@ -19,8 +19,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isWaitingToHold) RefreshStartGauge(Time.deltaTime);
     }
-
-
+    
     #region Input Action Events
 
     public void OnMove(InputAction.CallbackContext ctx)
@@ -62,6 +61,8 @@ public class PlayerController : MonoBehaviour
 
         Vector3 finalPos = initPos;
         initPos += Vector3.up * 10;
+        
+        transform.eulerAngles = Vector3.up * 180;
         
         transform.position = initPos;
         isWaitingToHold = false;
