@@ -1113,7 +1113,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdSpeed: 2
   moveAxis: {x: 0, y: 0}
+  cameraAxis: {x: 0, y: 0}
   currentState: 0
+  walkRotateSpeed: 150
+  walkSpeed: 10
+  jumpDuration: 0.2
+  jumpHeight: 1.25
+  jumpForward: 0
   glideSpeed: 0
   glideMaxSpeed: 25
   accelerationCurve:
@@ -1172,13 +1178,6 @@ MonoBehaviour:
   ground:
     serializedVersion: 2
     m_Bits: 1
-  landingSpeedCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  baseLandingSpeed: 0
   baseLandingDuration: 0.5
 --- !u!114 &5686456588915172969
 MonoBehaviour:
