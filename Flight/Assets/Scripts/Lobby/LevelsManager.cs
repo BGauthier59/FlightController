@@ -53,7 +53,7 @@ public class LevelsManager : MonoSingleton<LevelsManager>
         var players = ConnectionManager.instance.GetPlayers();
         foreach (var pc in players)
         {
-            pc.SelectCompleted();
+            pc.playerController.SelectCompleted();
         }
 
         PostProcessManager.instance.SwitchVolume(5, 2);

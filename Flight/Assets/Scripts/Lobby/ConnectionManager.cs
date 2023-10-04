@@ -6,7 +6,7 @@ public class ConnectionManager : MonoSingleton<ConnectionManager>
 {
     [SerializeField] private Transform[] spawnZones;
 
-    [SerializeField] private List<PlayerController> players;
+    [SerializeField] private List<PlayerIdentity> players;
 
     public override void Awake()
     {
@@ -17,8 +17,8 @@ public class ConnectionManager : MonoSingleton<ConnectionManager>
     public void OnPlayerJoined(PlayerInput input)
     {
         int number = PlayerInputManager.instance.playerCount - 1;
-        PlayerController player = input.GetComponent<PlayerController>();
-        player.OnJoined(spawnZones[number].position, number);
+        PlayerIdentity player = input.GetComponent<PlayerIdentity>();
+        player.playerController.OnJoined(spawnZones[number].position, number);
         players.Add(player);
 
         if (number == PlayerInputManager.instance.maxPlayerCount - 1)
@@ -32,7 +32,7 @@ public class ConnectionManager : MonoSingleton<ConnectionManager>
         LobbyUIManager.instance.AllPlayerConnect();
         foreach (var player in players)
         {
-            player.SetReadyToHold();
+            player.playerController.SetReadyToHold();
         }
     }
 
@@ -40,13 +40,13 @@ public class ConnectionManager : MonoSingleton<ConnectionManager>
     {
         foreach (var pc in players)
         {
-            if (!pc.IsHoldingComplete()) return;
+            if (!pc.playerController.IsHoldingComplete()) return;
         }
 
         // Plays feedbacks
         foreach (var pc in players)
         {
-            pc.HoldCompleted();
+            pc.playerController.HoldCompleted();
         }
 
         LobbyUIManager.instance.ExitLobbyGUI();
@@ -57,11 +57,11 @@ public class ConnectionManager : MonoSingleton<ConnectionManager>
 
         foreach (var pc in players)
         {
-            pc.SetReadyToSelect();
+            pc.playerController.SetReadyToSelect();
         }
     }
 
-    public PlayerController[] GetPlayers()
+    public PlayerIdentity[] GetPlayers()
     {
         return players.ToArray();
     }

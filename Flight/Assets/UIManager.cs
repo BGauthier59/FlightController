@@ -35,4 +35,10 @@ public class UIManager : MonoBehaviour
                 break;
         }
     }
+    
+    public void AttachToPlayer(PlayerIdentity identity)
+    {
+        player = identity;
+        identity.uiManager = this;
+    }
 }

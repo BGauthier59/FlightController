@@ -5,9 +5,11 @@ using UnityEngine;
 public class PlayerIdentity : MonoBehaviour
 {
     public int index;
-    public PlanerController_PROTOTYPE planerController;
+    public PlayerController playerController;
     public UIManager uiManager;
+    public CameraController cameraController;
+    public Transform visuals,headBone;
     
-    
-    
+
+
 }
