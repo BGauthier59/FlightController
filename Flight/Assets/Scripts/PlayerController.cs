@@ -394,6 +394,8 @@ public class PlayerController : MonoBehaviour
     public float baseLandingDuration;
     private float baseLandingTimer;
 
+    [SerializeField] private GameObject tutorialText;
+
     private void ToLand()
     {
         p1 = transform.position;
@@ -432,6 +434,7 @@ public class PlayerController : MonoBehaviour
         if (!Physics.Raycast(rayOrigin.position, rayDirection, out hit, distanceToLand, ground))
         {
             Debug.DrawRay(rayOrigin.position, rayDirection * distanceToLand, Color.green);
+            tutorialText.SetActive(false);
 
             return; // Pas de sol
         }
@@ -445,9 +448,11 @@ public class PlayerController : MonoBehaviour
         {
             EnableLandingFeedback();
             canLand = true;
+            tutorialText.SetActive(true);
         }
         else // Arrêt forcé
         {
+            tutorialText.SetActive(false);
             SwitchState(State.LAND);
         }
     }
