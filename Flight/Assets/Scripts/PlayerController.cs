@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
         if (inGame) ExecuteState();
     }
 
+
     #region Input Action Events
 
     public void OnMove(InputAction.CallbackContext ctx)
@@ -250,7 +251,7 @@ public class PlayerController : MonoBehaviour
         {
             RotateWalk();
 
-            transform.position += transform.forward * (moveAxis.y * walkSpeed * Time.deltaTime);
+            rb.position += transform.forward * (moveAxis.y * walkSpeed * Time.deltaTime);
             identity.ChangeAnimation(Anim.Walk);
         }
         else
@@ -331,9 +332,11 @@ public class PlayerController : MonoBehaviour
     public float speedFactor, attractionFactor;
     private Vector3 down = Vector3.down;
 
+    public Rigidbody rb;
+
     private void ToGlide()
     {
-        glideSpeed *= 2;
+        glideSpeed *= decelerationFactor;
 
         identity.ChangeAnimation(Anim.Glide);
         // Feedbacks
@@ -348,7 +351,7 @@ public class PlayerController : MonoBehaviour
 
         EvaluateGlideSpeed(dot);
 
-        transform.position += transform.forward * (glideSpeed * Time.deltaTime);
+        rb.position += transform.forward * (glideSpeed * Time.deltaTime);
 
         // Check conditions
 
@@ -357,8 +360,8 @@ public class PlayerController : MonoBehaviour
 
     private void RotateGlide()
     {
-        transform.rotation = Quaternion.Euler(
-            transform.eulerAngles.x + moveAxis.y * glideRotateSpeed.x * Time.deltaTime 
+        rb.rotation = Quaternion.Euler(
+            transform.eulerAngles.x + moveAxis.y * glideRotateSpeed.x * Time.deltaTime
                                     + attractionOverSpeed.Evaluate(ratioSpeed) * Time.deltaTime * attractionFactor,
             transform.eulerAngles.y + moveAxis.x * glideRotateSpeed.y * Time.deltaTime, 0);
     }
@@ -415,14 +418,14 @@ public class PlayerController : MonoBehaviour
         if (baseLandingTimer > baseLandingDuration)
         {
             baseLandingTimer = 0;
-            transform.rotation = finalRotation;
-            transform.position = p4;
+            rb.rotation = finalRotation;
+            rb.position = p4;
             SwitchState(State.WALK);
         }
         else
         {
-            transform.position = Ex.CubicBeziersCurve(p1, p2, p3, p4, baseLandingTimer / baseLandingDuration);
-            transform.rotation = Quaternion.Lerp(initRotation, finalRotation, baseLandingTimer / baseLandingDuration);
+            rb.position = Ex.CubicBeziersCurve(p1, p2, p3, p4, baseLandingTimer / baseLandingDuration);
+            rb.rotation = Quaternion.Lerp(initRotation, finalRotation, baseLandingTimer / baseLandingDuration);
             baseLandingTimer += Time.deltaTime;
         }
     }
@@ -466,4 +469,9 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #endregion
+
+    private void OnCollisionEnter(Collision other)
+    {
+        glideSpeed = 0;
+    }
 }
