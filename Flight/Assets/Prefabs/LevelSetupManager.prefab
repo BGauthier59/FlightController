@@ -145,7 +145,7 @@ MonoBehaviour:
   identity: {fileID: 0}
   offset: {x: 0, y: 2, z: -6}
   cam: {fileID: 7131701031355039374}
-  fieldOfViewBounds: {x: 60, y: 80}
+  fieldOfViewBounds: {x: 60, y: 100}
   axisRot: 0
 --- !u!1 &2280925618073512905
 GameObject:
@@ -323,7 +323,7 @@ MonoBehaviour:
   identity: {fileID: 0}
   offset: {x: 0, y: 2, z: -6}
   cam: {fileID: 4123805362759292274}
-  fieldOfViewBounds: {x: 60, y: 80}
+  fieldOfViewBounds: {x: 60, y: 100}
   axisRot: 0
 --- !u!1 &4002428576932897367
 GameObject:

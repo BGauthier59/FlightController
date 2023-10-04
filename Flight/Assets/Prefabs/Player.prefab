@@ -1119,10 +1119,11 @@ MonoBehaviour:
   walkRotateSpeed: 150
   walkSpeed: 10
   jumpDuration: 0.2
-  jumpHeight: 1.25
-  jumpForward: 0
+  jumpHeight: 25
+  rotateCorrectionFactor: 0.25
+  decelerationFactor: 1.3
   glideSpeed: 0
-  glideMaxSpeed: 25
+  glideMaxSpeed: 17.5
   accelerationCurve:
     serializedVersion: 2
     m_Curve:
@@ -1171,8 +1172,44 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  glideRotateSpeed: 30
+  attractionOverSpeed:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.0040283203
+      value: 1
+      inSlope: -2.3947406
+      outSlope: -2.3947406
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.15840916
+    - serializedVersion: 3
+      time: 0.4
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  glideRotateSpeed:
+    x: 30
+    y: 120
   speedFactor: 0.15
+  attractionFactor: 60
   distanceToLand: 7
   securityDistanceToLand: 1
   rayOrigin: {fileID: 6929279604001730512}

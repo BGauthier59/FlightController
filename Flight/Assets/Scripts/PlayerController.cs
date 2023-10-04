@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
 {
     private int index;
 
-    [SerializeField] private PlayerIdentity identity; 
+    [SerializeField] private PlayerIdentity identity;
     private bool isWaitingToHold, isHolding, isSelectingLevel;
     private float holdTimer;
     [SerializeField] private float holdSpeed;
@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour
             moveAxis = Vector2.zero;
             return;
         }
+
         moveAxis = ctx.ReadValue<Vector2>();
     }
 
@@ -50,6 +51,7 @@ public class PlayerController : MonoBehaviour
             cameraAxis = Vector2.zero;
             return;
         }
+
         cameraAxis = ctx.ReadValue<Vector2>();
     }
 
@@ -255,13 +257,14 @@ public class PlayerController : MonoBehaviour
         {
             identity.ChangeAnimation(Anim.Idle);
         }
-        
+
         CheckGroundOnWalk();
     }
 
     private void RotateWalk()
     {
-        transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y + moveAxis.x * walkRotateSpeed * Time.deltaTime, 0);
+        transform.rotation =
+            Quaternion.Euler(0, transform.eulerAngles.y + moveAxis.x * walkRotateSpeed * Time.deltaTime, 0);
     }
 
     private void CheckGroundOnWalk()
@@ -282,23 +285,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpDuration;
     private float jumpTimer;
     [SerializeField] private float jumpHeight;
-    [SerializeField] private float jumpForward;
+    private float currentJumpHeight;
+    [SerializeField] private float rotateCorrectionFactor, decelerationFactor;
 
     private void ToJump()
     {
         // Changer vitesse
-        glideSpeed /= 1.75f;
+        glideSpeed /= decelerationFactor;
         isJumping = true;
 
-        Vector3 forwardXZ = transform.forward;
-        forwardXZ.y = 0;
-        forwardXZ.Normalize();
-        
-        p1 = transform.position;
-        p2 = transform.position + Vector3.up;
-        p3 = transform.position + Vector3.up * (jumpHeight * glideSpeed * .3f);
-        p4 = transform.position + Vector3.up * (jumpHeight * glideSpeed * .3f);
-
+        currentJumpHeight = jumpHeight;
         initRotation = transform.rotation;
         finalRotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
         identity.ChangeAnimation(Anim.Flap);
@@ -306,20 +302,19 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        // Check timer jump => Glide / Land (si trop proche)
-
         if (jumpTimer > jumpDuration)
         {
             jumpTimer = 0;
             isJumping = false;
-            transform.position = p4;
-            transform.rotation = finalRotation;
             SwitchState(State.GLIDE);
         }
         else
         {
-            transform.position = Ex.CubicBeziersCurve(p1, p2, p3, p4, jumpTimer / jumpDuration);
-            transform.rotation = Quaternion.Lerp(initRotation, finalRotation, jumpTimer / jumpDuration);
+            currentJumpHeight = math.lerp(jumpHeight, 0, jumpTimer / jumpDuration);
+            transform.position += transform.forward * (glideSpeed * Time.deltaTime) +
+                                  Vector3.up * (currentJumpHeight * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(initRotation, finalRotation,
+                (jumpTimer / jumpDuration) * rotateCorrectionFactor);
             jumpTimer += Time.deltaTime;
         }
     }
@@ -330,15 +325,16 @@ public class PlayerController : MonoBehaviour
 
     public float glideSpeed, glideMaxSpeed;
     private float ratioSpeed;
-    public AnimationCurve accelerationCurve, decelerationCurve;
+    public AnimationCurve accelerationCurve, decelerationCurve, attractionOverSpeed;
 
-    public float glideRotateSpeed, speedFactor;
+    public float2 glideRotateSpeed;
+    public float speedFactor, attractionFactor;
     private Vector3 down = Vector3.down;
 
     private void ToGlide()
     {
         glideSpeed *= 2;
-        
+
         identity.ChangeAnimation(Anim.Glide);
         // Feedbacks
     }
@@ -361,8 +357,10 @@ public class PlayerController : MonoBehaviour
 
     private void RotateGlide()
     {
-        transform.rotation = Quaternion.Euler(transform.eulerAngles.x + moveAxis.y * glideRotateSpeed * Time.deltaTime,
-            transform.eulerAngles.y + moveAxis.x * glideRotateSpeed * Time.deltaTime, 0);
+        transform.rotation = Quaternion.Euler(
+            transform.eulerAngles.x + moveAxis.y * glideRotateSpeed.x * Time.deltaTime 
+                                    + attractionOverSpeed.Evaluate(ratioSpeed) * Time.deltaTime * attractionFactor,
+            transform.eulerAngles.y + moveAxis.x * glideRotateSpeed.y * Time.deltaTime, 0);
     }
 
     private void EvaluateGlideSpeed(float dot)
