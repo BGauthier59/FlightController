@@ -4,9 +4,12 @@ using Random = UnityEngine.Random;
 public class LevelGamemode : MonoBehaviour
 {
     [SerializeField] private GoalCircle[] goalCircleList;
+    public PlayerIdentity[] players;
     [SerializeField] private int numberToWin, player1points, player2points;
     public static LevelGamemode instance;
-    private void Start()
+    public PostGameSceenManager postGameManager;
+
+    public void StartLevel()
     {
         player1points = player2points = 0;
         DisplayCircle();
@@ -19,9 +22,11 @@ public class LevelGamemode : MonoBehaviour
             goal.enabled = false;
         }
         
-        int rand = (int)Random.Range(0, goalCircleList.Length);
+        var rand = (int)Random.Range(0, goalCircleList.Length + 1);
 
         goalCircleList[rand].enabled = true;
+
+        players[0].uiManager.goal = players[1].uiManager.goal = goalCircleList[rand].transform;
     }
 
     public void AddPoint(int i)
@@ -39,10 +44,12 @@ public class LevelGamemode : MonoBehaviour
         if (player1points >= numberToWin)
         {
             Debug.Log("Player 1 Win");
+            postGameManager.DisplayWinner(0,player1points, player2points );
         }
         else if (player2points >= numberToWin)
         {
             Debug.Log("Player 2 Win");
+            postGameManager.DisplayWinner(1,player1points, player2points );
         }
     }
 }
