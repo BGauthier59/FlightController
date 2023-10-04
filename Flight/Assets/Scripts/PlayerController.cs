@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
 
     private bool inGame;
 
-    private Vector2 moveAxis;
+    private Vector2 moveAxis, cameraAxis;
 
     private void Start()
     {
@@ -32,8 +32,23 @@ public class PlayerController : MonoBehaviour
     public void OnMove(InputAction.CallbackContext ctx)
     {
         if (!inGame) return;
-        if (ctx.canceled) return;
+        if (ctx.canceled)
+        {
+            moveAxis = Vector2.zero;
+            return;
+        }
         moveAxis = ctx.ReadValue<Vector2>();
+    }
+
+    public void OnMoveCamera(InputAction.CallbackContext ctx)
+    {
+        if (!inGame) return;
+        if (ctx.canceled)
+        {
+            cameraAxis = Vector2.zero;
+            return;
+        }
+        cameraAxis = ctx.ReadValue<Vector2>();
     }
 
     public void OnSwitchLeft(InputAction.CallbackContext ctx)
@@ -64,16 +79,15 @@ public class PlayerController : MonoBehaviour
     public void OnLand(InputAction.CallbackContext ctx)
     {
         if (!inGame) return;
-        
-        // DEBUG
-        if (currentState == State.WALK && ctx.started)
-        {
-            transform.position+=Vector3.up * 50;
-            SwitchState(State.GLIDE);
-            return;
-        }
-        
+
         if (canLand && ctx.started) SwitchState(State.LAND);
+    }
+
+    public void OnJump(InputAction.CallbackContext ctx)
+    {
+        if (!inGame) return;
+        if (isJumping) return;
+        SwitchState(State.JUMP);
     }
 
     #endregion
@@ -218,30 +232,88 @@ public class PlayerController : MonoBehaviour
 
     #region Walk
 
+    [SerializeField] private float walkRotateSpeed;
+    [SerializeField] private float walkSpeed;
+
     private void ToWalk()
     {
-        // Changer variables pour le joystick
+        glideSpeed = 1;
     }
 
     private void Walk()
     {
-        // Marcher et rotate
+        if (moveAxis.magnitude > .2f)
+        {
+            RotateWalk();
 
-        // Chgmt de state -> check raycast vers le sol => Glide
+            transform.position += transform.forward * (moveAxis.y * walkSpeed * Time.deltaTime);
+        }
+        
+        CheckGroundOnWalk();
+    }
+
+    private void RotateWalk()
+    {
+        transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y + moveAxis.x * walkRotateSpeed * Time.deltaTime, 0);
+    }
+
+    private void CheckGroundOnWalk()
+    {
+        if (Physics.Raycast(rayOrigin.position, down, out hit, distanceToLand, ground))
+        {
+            return; // Sol
+        }
+
+        SwitchState(State.GLIDE);
     }
 
     #endregion
 
     #region Jump
 
+    private bool isJumping;
+    [SerializeField] private float jumpDuration;
+    private float jumpTimer;
+    [SerializeField] private float jumpHeight;
+    [SerializeField] private float jumpForward;
+
     private void ToJump()
     {
         // Changer vitesse
+        glideSpeed /= 1.75f;
+        isJumping = true;
+
+        Vector3 forwardXZ = transform.forward;
+        forwardXZ.y = 0;
+        forwardXZ.Normalize();
+        
+        p1 = transform.position;
+        p2 = transform.position + Vector3.up;
+        p3 = transform.position + Vector3.up * (jumpHeight * glideSpeed * .3f);
+        p4 = transform.position + Vector3.up * (jumpHeight * glideSpeed * .3f);
+
+        initRotation = transform.rotation;
+        finalRotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
     }
 
     private void Jump()
     {
         // Check timer jump => Glide / Land (si trop proche)
+
+        if (jumpTimer > jumpDuration)
+        {
+            jumpTimer = 0;
+            isJumping = false;
+            transform.position = p4;
+            transform.rotation = finalRotation;
+            SwitchState(State.GLIDE);
+        }
+        else
+        {
+            transform.position = Ex.CubicBeziersCurve(p1, p2, p3, p4, jumpTimer / jumpDuration);
+            transform.rotation = Quaternion.Lerp(initRotation, finalRotation, jumpTimer / jumpDuration);
+            jumpTimer += Time.deltaTime;
+        }
     }
 
     #endregion
@@ -257,6 +329,7 @@ public class PlayerController : MonoBehaviour
 
     private void ToGlide()
     {
+        glideSpeed *= 2;
         // Feedbacks
     }
 
@@ -273,7 +346,7 @@ public class PlayerController : MonoBehaviour
 
         // Check conditions
 
-        CheckGround();
+        CheckGroundOnGlide();
     }
 
     private void RotateGlide()
@@ -308,11 +381,7 @@ public class PlayerController : MonoBehaviour
     Vector3 p1, p2, p3, p4;
 
     private Quaternion initRotation;
-    private Quaternion finaleRotation = Quaternion.Euler(Vector3.zero);
-
-    [SerializeField] private AnimationCurve landingSpeedCurve;
-    private float landingSpeed;
-    public float baseLandingSpeed;
+    private Quaternion finalRotation;
 
     public float baseLandingDuration;
     private float baseLandingTimer;
@@ -325,8 +394,7 @@ public class PlayerController : MonoBehaviour
         p4 = hit.point;
 
         initRotation = transform.rotation;
-        finaleRotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
-        landingSpeed = baseLandingSpeed * landingSpeedCurve.Evaluate(ratioSpeed);
+        finalRotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
     }
 
     private void Land()
@@ -336,20 +404,19 @@ public class PlayerController : MonoBehaviour
         if (baseLandingTimer > baseLandingDuration)
         {
             baseLandingTimer = 0;
-            transform.rotation = finaleRotation;
+            transform.rotation = finalRotation;
             transform.position = p4;
             SwitchState(State.WALK);
         }
         else
         {
             transform.position = Ex.CubicBeziersCurve(p1, p2, p3, p4, baseLandingTimer / baseLandingDuration);
-            transform.rotation = Quaternion.Lerp(initRotation, finaleRotation, baseLandingTimer / baseLandingDuration);
-            //baseLandingTimer += Time.deltaTime * landingSpeed;
+            transform.rotation = Quaternion.Lerp(initRotation, finalRotation, baseLandingTimer / baseLandingDuration);
             baseLandingTimer += Time.deltaTime;
         }
     }
 
-    private void CheckGround()
+    private void CheckGroundOnGlide()
     {
         rayDirection = (transform.forward + down);
 
@@ -362,7 +429,7 @@ public class PlayerController : MonoBehaviour
 
         float dot = math.dot(Vector3.up, hit.normal);
         if (dot < .9f) return;
-        
+
         Debug.DrawRay(rayOrigin.position, rayDirection * distanceToLand, Color.red);
 
         if (hit.distance > securityDistanceToLand) // Arrêt possible
