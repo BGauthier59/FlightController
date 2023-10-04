@@ -20,5 +20,6 @@ public class LevelSetupManager : MonoBehaviour
         }
 
         LevelProgressionManager.instance.players = players;
+        LevelGamemode.instance.StartLevel();
     }
 }
