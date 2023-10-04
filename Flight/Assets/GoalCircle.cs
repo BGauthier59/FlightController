@@ -12,7 +12,7 @@ public class GoalCircle : MonoBehaviour
         {
             PlayerIdentity player = other.transform.parent.GetComponent<PlayerIdentity>();
             player.playerController.glideSpeed += speedBoost;
-            LevelProgressionManager.instance.PlayerGetGoal(player.index,goalIndex);
+            LevelGamemode.instance.AddPoint(player.index);
         }
     }
 }
