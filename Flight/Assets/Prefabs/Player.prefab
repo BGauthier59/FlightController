@@ -1111,6 +1111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d2a3a907c0b99e44b58c72d8ae74b93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  identity: {fileID: 5686456588915172969}
   holdSpeed: 2
   moveAxis: {x: 0, y: 0}
   cameraAxis: {x: 0, y: 0}
@@ -1178,7 +1179,7 @@ MonoBehaviour:
   ground:
     serializedVersion: 2
     m_Bits: 1
-  baseLandingDuration: 0.5
+  baseLandingDuration: 0.1
 --- !u!114 &5686456588915172969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1197,6 +1198,7 @@ MonoBehaviour:
   cameraController: {fileID: 0}
   visuals: {fileID: 1280250939529360044}
   headBone: {fileID: 1517714318124526221}
+  animator: {fileID: 7626393957120875473}
 --- !u!1 &3619997840595846406
 GameObject:
   m_ObjectHideFlags: 0
