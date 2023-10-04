@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -30,12 +31,14 @@ public class UIManager : MonoBehaviour
             case 3:
                 rankDisplay.text = "4th";
                 break;
-            case 4:
-                rankDisplay.text = "4th";
-                break;
         }
     }
-    
+
+    private void Start()
+    {
+        goal = LevelProgressionManager.instance.goalCircles[0].transform;
+    }
+
     public void AttachToPlayer(PlayerIdentity identity)
     {
         player = identity;

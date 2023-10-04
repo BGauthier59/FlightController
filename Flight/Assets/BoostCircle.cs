@@ -10,10 +10,8 @@ public class BoostCircle : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            PlayerIdentity player = other.gameObject.GetComponent<PlayerIdentity>();
-            Debug.Log("SPEED " + player.playerController.glideSpeed);
+            PlayerIdentity player = other.transform.parent.GetComponent<PlayerIdentity>();
             player.playerController.glideSpeed += speedBoost;
-            Debug.Log("SPEED " + player.playerController.glideSpeed);
         }
     }
 }

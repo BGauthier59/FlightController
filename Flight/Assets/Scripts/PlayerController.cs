@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
 
     private bool inGame;
 
-    private Vector2 moveAxis, cameraAxis;
+    public Vector2 moveAxis, cameraAxis;
 
     private void Start()
     {
