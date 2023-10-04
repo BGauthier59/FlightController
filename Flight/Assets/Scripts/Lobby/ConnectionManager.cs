@@ -8,6 +8,12 @@ public class ConnectionManager : MonoSingleton<ConnectionManager>
 
     [SerializeField] private List<PlayerController> players;
 
+    public override void Awake()
+    {
+        base.Awake();
+        DontDestroyOnLoad(gameObject);
+    }
+
     public void OnPlayerJoined(PlayerInput input)
     {
         int number = PlayerInputManager.instance.playerCount - 1;
