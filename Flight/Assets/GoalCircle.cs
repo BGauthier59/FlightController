@@ -10,7 +10,7 @@ public class GoalCircle : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            PlayerIdentity player = other.gameObject.GetComponent<PlayerIdentity>();
+            PlayerIdentity player = other.transform.parent.GetComponent<PlayerIdentity>();
             player.playerController.glideSpeed += speedBoost;
             LevelProgressionManager.instance.PlayerGetGoal(player.index,goalIndex);
         }

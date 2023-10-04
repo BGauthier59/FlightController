@@ -8,13 +8,15 @@ using UnityEngine.Serialization;
 public class PlayerController : MonoBehaviour
 {
     private int index;
+
+    [SerializeField] private PlayerIdentity identity; 
     private bool isWaitingToHold, isHolding, isSelectingLevel;
     private float holdTimer;
     [SerializeField] private float holdSpeed;
 
     private bool inGame;
 
-    private Vector2 moveAxis, cameraAxis;
+    public Vector2 moveAxis, cameraAxis;
 
     private void Start()
     {
@@ -247,6 +249,11 @@ public class PlayerController : MonoBehaviour
             RotateWalk();
 
             transform.position += transform.forward * (moveAxis.y * walkSpeed * Time.deltaTime);
+            identity.ChangeAnimation(Anim.Walk);
+        }
+        else
+        {
+            identity.ChangeAnimation(Anim.Idle);
         }
         
         CheckGroundOnWalk();
@@ -294,6 +301,7 @@ public class PlayerController : MonoBehaviour
 
         initRotation = transform.rotation;
         finalRotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
+        identity.ChangeAnimation(Anim.Flap);
     }
 
     private void Jump()
@@ -330,6 +338,8 @@ public class PlayerController : MonoBehaviour
     private void ToGlide()
     {
         glideSpeed *= 2;
+        
+        identity.ChangeAnimation(Anim.Glide);
         // Feedbacks
     }
 
@@ -395,6 +405,7 @@ public class PlayerController : MonoBehaviour
 
         initRotation = transform.rotation;
         finalRotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
+        identity.ChangeAnimation(Anim.Land);
     }
 
     private void Land()
