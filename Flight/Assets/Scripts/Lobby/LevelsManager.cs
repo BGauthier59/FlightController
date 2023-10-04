@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelsManager : MonoSingleton<LevelsManager>
 {
@@ -57,7 +58,7 @@ public class LevelsManager : MonoSingleton<LevelsManager>
 
         PostProcessManager.instance.SwitchVolume(5, 2);
         await LobbyCameraManager.instance.MoveToBookmark(2, 5);
-        
-        Debug.Log($"GO with {current.name}");
+
+        SceneManager.LoadScene(current.sceneIndex);
     }
 }
