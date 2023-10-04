@@ -6317,7 +6317,7 @@ Transform:
   m_GameObject: {fileID: 780165166}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 23, z: 317}
+  m_LocalPosition: {x: 0, y: 53.78125, z: 317}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7768,7 +7768,7 @@ Transform:
   m_GameObject: {fileID: 938571835}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1, y: 31, z: 49}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 75, y: 75, z: 150}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8295,7 +8295,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1044916272}
-  - component: {fileID: 1044916271}
+  - component: {fileID: 1044916273}
   m_Layer: 0
   m_Name: LevelProgressionManager
   m_TagString: Untagged
@@ -8303,32 +8303,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1044916271
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1044916270}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f855ac7c07b468447a5c770a3a561cbf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  numberOfPlayers: 2
-  players: []
-  playersStep: 0000000000000000
-  playersRank: 0000000000000000
-  playerStepProgression:
-  - 1
-  - 1
-  goalCircles:
-  - {fileID: 1278028375}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!4 &1044916272
 Transform:
   m_ObjectHideFlags: 0
@@ -8348,6 +8322,26 @@ Transform:
   - {fileID: 780165167}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1044916273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1044916270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08cae12687e240448b7a37e1291252a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  goalCircleList:
+  - {fileID: 1278028375}
+  - {fileID: 2050538280}
+  - {fileID: 1796779284}
+  - {fileID: 780165169}
+  numberToWin: 10
+  player1points: 0
+  player2points: 0
 --- !u!1 &1055706140
 GameObject:
   m_ObjectHideFlags: 0
@@ -10958,7 +10952,7 @@ Transform:
   m_GameObject: {fileID: 1278028374}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 50, z: -39}
+  m_LocalPosition: {x: 0, y: 80.78125, z: -39}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15646,7 +15640,7 @@ Transform:
   m_GameObject: {fileID: 1796779281}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 21, z: 112}
+  m_LocalPosition: {x: 0, y: 51.78125, z: 112}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -16993,7 +16987,7 @@ Transform:
   m_GameObject: {fileID: 2050538277}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: 47.16, z: -3.9263687}
+  m_LocalPosition: {x: 3, y: 77.94125, z: -3.9263687}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
