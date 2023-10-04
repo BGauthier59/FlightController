@@ -5266,7 +5266,7 @@ MonoBehaviour:
   - sceneIndex: 2
     sprite: {fileID: 0}
     name: Level 2
-  - sceneIndex: 1
+  - sceneIndex: 3
     sprite: {fileID: 0}
     name: Level 3
   levelDisplay: {fileID: 1855874322}
