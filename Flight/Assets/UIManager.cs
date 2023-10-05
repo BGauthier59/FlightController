@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     public Transform goal;
     [SerializeField] private TMP_Text meterCount,rankDisplay;
     public int playerIndex;
+    private int maxScore;
 
     // Update is called once per frame
     void Update()
@@ -19,6 +20,7 @@ public class UIManager : MonoBehaviour
         
         arrow.rotation = Quaternion.Lerp(arrow.rotation,Quaternion.LookRotation(Quaternion.Euler(0,-player.transform.eulerAngles.y,0) * (goal.position - player.transform.position).normalized),Time.deltaTime*5);
         meterCount.text = Mathf.Round(Vector3.Distance(goal.position, player.transform.position)) + "m";
+        
         // switch (LevelProgressionManager.instance.playersRank[playerIndex])
         // {
         //     case 0:
@@ -36,9 +38,14 @@ public class UIManager : MonoBehaviour
         // }
     }
 
-    public void StartGoalSearch(Transform transform)
+    public void StartGoalSearch(Transform transform, int p1Score, int p2Score, int maxScore)
     {
+        this.maxScore = maxScore;
+        
         goal = transform;
+        if (playerIndex == 0) rankDisplay.text = $"{p1Score} / {this.maxScore}";
+        else rankDisplay.text = $"{p2Score} / {this.maxScore}";
+
     }
 
     public void AttachToPlayer(PlayerIdentity identity)

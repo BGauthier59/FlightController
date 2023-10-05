@@ -26,9 +26,9 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (isWaitingToHold) RefreshStartGauge(Time.deltaTime);
+        if (isWaitingToHold && !inEndGameMenu) RefreshStartGauge(Time.deltaTime);
         if (inGame) ExecuteState();
-        if (inEndGameMenu) RefreshRestartGauge(Time.deltaTime);
+        if (isWaitingToHold && inEndGameMenu) RefreshRestartGauge(Time.deltaTime);
     }
 
 
@@ -169,7 +169,10 @@ public class PlayerController : MonoBehaviour
 
     public void HoldCompleted()
     {
+        isHolding = false;
+        holdTimer = 0;
         isWaitingToHold = false;
+        inEndGameMenu = false;
     }
 
     public void SetReadyToSelect()
