@@ -1,9 +1,12 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using System.Linq;
 
 public class LevelGamemode : MonoBehaviour
 {
-    [SerializeField] private GoalCircle[] goalCircleList;
+    [SerializeField] private List<GoalCircle> goalCircleList;
+    [SerializeField] private List<GoalCircle> circleShuffle = new();
     public PlayerIdentity[] players;
     [SerializeField] private int numberToWin, player1points, player2points;
     public static LevelGamemode instance;
@@ -22,19 +25,22 @@ public class LevelGamemode : MonoBehaviour
         {
             goal.gameObject.SetActive(false);
         }
+
+        circleShuffle = Ex.ShuffleList(goalCircleList);
         
         DisplayCircle();
     }
 
     private void DisplayCircle()
     {
-        var rand = (int)Random.Range(0, goalCircleList.Length);
-
-        goalCircleList[rand].gameObject.SetActive(true);
+        var rand = circleShuffle[0].transform;
+        circleShuffle.RemoveAt(0);
+        
+        rand.gameObject.SetActive(true);
         
         foreach (var p in players)
         {
-            p.uiManager.StartGoalSearch(goalCircleList[rand].transform, player1points, player2points, numberToWin);
+            p.uiManager.StartGoalSearch(rand, player1points, player2points, numberToWin);
         }
     }
 
