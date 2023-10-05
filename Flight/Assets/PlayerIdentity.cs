@@ -9,7 +9,7 @@ public class PlayerIdentity : MonoBehaviour
     public PlayerController playerController;
     public UIManager uiManager;
     public CameraController cameraController;
-    public Transform visuals,headBone;
+    public Transform visuals, headBone;
     public Animator animator;
 
     public async void ChangeAnimation(Anim anim)
@@ -17,29 +17,27 @@ public class PlayerIdentity : MonoBehaviour
         switch (anim)
         {
             case Anim.Glide:
-                animator.SetInteger("Animation",0);
+                animator.SetInteger("Animation", 0);
                 break;
             case Anim.Flap:
-                animator.SetInteger("Animation",1);
+                animator.SetInteger("Animation", 1);
                 await Task.Delay(200);
-                animator.SetInteger("Animation",0);
+                animator.SetInteger("Animation", 0);
                 break;
             case Anim.Walk:
-                animator.SetInteger("Animation",4);
+                animator.SetInteger("Animation", 4);
                 break;
             case Anim.Idle:
-                animator.SetInteger("Animation",3);
+                animator.SetInteger("Animation", 3);
                 break;
             case Anim.Land:
-                animator.SetInteger("Animation",2);
+                animator.SetInteger("Animation", 2);
                 await Task.Delay(200);
-                animator.SetInteger("Animation",3);
+                if (playerController.GetState() == PlayerController.State.GLIDE) animator.SetInteger("Animation", 0);
+                else animator.SetInteger("Animation", 3);
                 break;
         }
     }
-
-
-
 }
 
 public enum Anim
