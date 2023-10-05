@@ -6,6 +6,7 @@ public class GoalCircle : MonoBehaviour
 {
     public float speedBoost;
     public int goalIndex;
+    public GameObject bubbles;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -14,6 +15,7 @@ public class GoalCircle : MonoBehaviour
             player.playerController.glideSpeed += speedBoost;
             LevelGamemode.instance.AddPoint(player.index);
             gameObject.SetActive(false);
+            GameObject effect = Instantiate(bubbles, transform.position, transform.rotation);
         }
     }
 }

@@ -153,6 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedBoost: 10
   goalIndex: 1
+  bubbles: {fileID: 4966165695489407112, guid: fa8fcf6528c45314e9629d17c1558356, type: 3}
 --- !u!54 &4337757146790630431
 Rigidbody:
   m_ObjectHideFlags: 0
