@@ -21,6 +21,7 @@ public class ConnectionManager : MonoSingleton<ConnectionManager>
         PlayerIdentity player = input.GetComponent<PlayerIdentity>();
         player.playerController.OnJoined(spawnZones[number].position, number);
         players.Add(player);
+        player.ChangeBody(players.Count - 1);
 
         if (number == PlayerInputManager.instance.maxPlayerCount - 1)
         {
