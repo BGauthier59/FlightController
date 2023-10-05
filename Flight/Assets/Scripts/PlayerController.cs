@@ -343,9 +343,10 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            float factor = Mathf.Clamp01(1 - (transform.position.y - 2) / 3);
             currentJumpHeight = math.lerp(jumpHeight, 0, jumpTimer / jumpDuration);
             transform.position += transform.forward * (glideSpeed * Time.deltaTime) +
-                                  Vector3.up * (currentJumpHeight * Time.deltaTime) + transform.forward * (currentJumpHeight * Time.deltaTime*0.3f);
+                                  Vector3.up * (currentJumpHeight * Time.deltaTime) + transform.forward * (currentJumpHeight * Time.deltaTime*0.3f) + Vector3.up * factor * 20 * Time.deltaTime;
             //transform.rotation = Quaternion.Lerp(initRotation, finalRotation, (jumpTimer / jumpDuration) * rotateCorrectionFactor);
             jumpTimer += Time.deltaTime;
             RotateGlide();
@@ -376,11 +377,13 @@ public class PlayerController : MonoBehaviour
     private void Glide()
     {
         RotateGlide();
-        
+
         float dot = math.dot(transform.forward, down);
         EvaluateGlideSpeed(dot);
 
-        rb.position += transform.forward * (glideSpeed * Time.deltaTime);
+        float factor = Mathf.Clamp01(1 - (transform.position.y - 2) / 3);
+        
+        rb.position += transform.forward * (glideSpeed * Time.deltaTime) + Vector3.up * factor * 20 * Time.deltaTime;
 
         // Check conditions
         CheckGroundOnGlide();
@@ -388,10 +391,13 @@ public class PlayerController : MonoBehaviour
 
     private void RotateGlide()
     {
+        // Calculates cloud force factor
+        float factor = Mathf.Clamp01(1 - (transform.position.y - 2) / 3);
+        
         // Calculate rotation
         Quaternion next = Quaternion.Euler(
             transform.eulerAngles.x + moveAxis.y * glideRotateSpeed.x * Time.deltaTime +
-            attractionOverSpeed.Evaluate(ratioSpeed) * Time.deltaTime * attractionFactor,
+            attractionOverSpeed.Evaluate(ratioSpeed) * Time.deltaTime * attractionFactor - factor * Time.deltaTime * attractionFactor *2,
             transform.eulerAngles.y + moveAxis.x * glideRotateSpeed.y * Time.deltaTime, 0);
 
         // Evaluate rotation and prevent pigeon from rotating more than possible
@@ -399,6 +405,7 @@ public class PlayerController : MonoBehaviour
         float dot = math.dot(rotationLooker.forward, Vector3.up);
         if (math.abs(dot) < dotToleranceAngle) rb.rotation = next;
     }
+    
 
     private void EvaluateGlideSpeed(float dot)
     {
