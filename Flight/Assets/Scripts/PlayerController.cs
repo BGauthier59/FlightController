@@ -345,9 +345,10 @@ public class PlayerController : MonoBehaviour
         {
             currentJumpHeight = math.lerp(jumpHeight, 0, jumpTimer / jumpDuration);
             transform.position += transform.forward * (glideSpeed * Time.deltaTime) +
-                                  Vector3.up * (currentJumpHeight * Time.deltaTime);
+                                  Vector3.up * (currentJumpHeight * Time.deltaTime) + transform.forward * (currentJumpHeight * Time.deltaTime*0.3f);
             //transform.rotation = Quaternion.Lerp(initRotation, finalRotation, (jumpTimer / jumpDuration) * rotateCorrectionFactor);
             jumpTimer += Time.deltaTime;
+            RotateGlide();
         }
     }
 

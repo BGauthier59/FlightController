@@ -21,8 +21,8 @@ public class CameraController : MonoBehaviour
     {
         axisRot = Mathf.Lerp(axisRot, -identity.playerController.moveAxis.x, Time.deltaTime * 2);
         
-        identity.visuals.localRotation = Quaternion.Euler(0,0,axisRot * 30);
-        identity.headBone.localRotation = Quaternion.Euler(4.41f,axisRot * -50,0);
+        identity.visuals.localRotation = Quaternion.Euler(0,0,axisRot * 60);
+        identity.headBone.localRotation = Quaternion.Euler(4.41f,axisRot * -80,0);
         Quaternion rot = Quaternion.Euler(identity.transform.eulerAngles.x, identity.transform.eulerAngles.y +axisRot * 5,
             identity.transform.eulerAngles.z);
         
