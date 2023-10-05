@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PostGameSceenManager : MonoBehaviour
@@ -8,14 +9,14 @@ public class PostGameSceenManager : MonoBehaviour
     [SerializeField] private string winText;
     [SerializeField] private string looseText;
     [SerializeField] private GameObject postGameHandler;
-    
     public PostGamePlayerSection[] playerSections;
 
-    private void Start()
-    {
-        postGameHandler.SetActive(false);
-    }
+    public static PostGameSceenManager instance;
 
+    private void Awake() => instance = this;
+
+    private void Start() => postGameHandler.SetActive(false);
+    
     public void DisplayWinner(int index, int p0Score, int p1Score)
     {
         if (index == 0)
@@ -37,6 +38,11 @@ public class PostGameSceenManager : MonoBehaviour
         postGameHandler.SetActive(true);
     }
     
+    public void RefreshReadyGaugeGUI(int index, float value)
+    {
+        PostGamePlayerSection data = playerSections[index];
+        data.readyGauge.fillAmount = value;
+    }
 }
 
 [Serializable]
@@ -45,4 +51,5 @@ public class PostGamePlayerSection
     public TextMeshProUGUI statusText;
     public TextMeshProUGUI scoreText;
     public Image image;
+    public Image readyGauge;
 }

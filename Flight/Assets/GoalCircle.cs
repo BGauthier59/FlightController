@@ -10,9 +10,10 @@ public class GoalCircle : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            PlayerIdentity player = other.transform.parent.GetComponent<PlayerIdentity>();
+            PlayerIdentity player = other.transform.root.GetComponent<PlayerIdentity>();
             player.playerController.glideSpeed += speedBoost;
             LevelGamemode.instance.AddPoint(player.index);
+            gameObject.SetActive(false);
         }
     }
 }

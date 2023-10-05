@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class ConnectionManager : MonoSingleton<ConnectionManager>
 {
@@ -55,6 +56,21 @@ public class ConnectionManager : MonoSingleton<ConnectionManager>
 
         await PostProcessManager.instance.SwitchVolume(.5f, 0);
 
+        foreach (var pc in players)
+        {
+            pc.playerController.SetReadyToSelect();
+        }
+    }
+
+    public void TryToGoMenu()
+    {
+        foreach (var pc in players)
+        {
+            if (!pc.playerController.IsHoldingComplete()) return;
+        }
+
+        SceneManager.LoadScene(0);
+        
         foreach (var pc in players)
         {
             pc.playerController.SetReadyToSelect();

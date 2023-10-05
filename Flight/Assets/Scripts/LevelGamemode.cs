@@ -9,6 +9,11 @@ public class LevelGamemode : MonoBehaviour
     public static LevelGamemode instance;
     public PostGameSceenManager postGameManager;
 
+    private void Awake()
+    {
+        instance = this;
+    }
+    
     public void StartLevel()
     {
         player1points = player2points = 0;
@@ -19,14 +24,17 @@ public class LevelGamemode : MonoBehaviour
     {
         foreach (var goal in goalCircleList)
         {
-            goal.enabled = false;
+            goal.gameObject.SetActive(false);
         }
         
-        var rand = (int)Random.Range(0, goalCircleList.Length + 1);
+        var rand = (int)Random.Range(0, goalCircleList.Length);
 
-        goalCircleList[rand].enabled = true;
-
-        players[0].uiManager.goal = players[1].uiManager.goal = goalCircleList[rand].transform;
+        goalCircleList[rand].gameObject.SetActive(true);
+        
+        foreach (var p in players)
+        {
+            p.uiManager.StartGoalSearch(goalCircleList[rand].transform);
+        }
     }
 
     public void AddPoint(int i)
@@ -41,6 +49,12 @@ public class LevelGamemode : MonoBehaviour
 
     private void CheckWin()
     {
+        var players = ConnectionManager.instance.GetPlayers();
+        for (int i = 0; i < players.Length; i++)
+        {
+            players[i].playerController.SetPlayerInMenu();
+        }
+        
         if (player1points >= numberToWin)
         {
             Debug.Log("Player 1 Win");

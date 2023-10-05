@@ -19,7 +19,13 @@ public class LevelSetupManager : MonoBehaviour
             players[i].index = i;
         }
 
-        LevelProgressionManager.instance.players = players;
-        LevelGamemode.instance.StartLevel();
+        if(LevelProgressionManager.instance != null) 
+            LevelProgressionManager.instance.players = players;
+
+        if (LevelGamemode.instance != null)
+        {
+            LevelGamemode.instance.players = players;
+            LevelGamemode.instance.StartLevel();
+        }
     }
 }

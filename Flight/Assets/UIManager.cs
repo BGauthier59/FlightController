@@ -15,28 +15,30 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(goal == null) return;
+        
         arrow.rotation = Quaternion.Lerp(arrow.rotation,Quaternion.LookRotation(Quaternion.Euler(0,-player.transform.eulerAngles.y,0) * (goal.position - player.transform.position).normalized),Time.deltaTime*5);
         meterCount.text = Mathf.Round(Vector3.Distance(goal.position, player.transform.position)) + "m";
-        switch (LevelProgressionManager.instance.playersRank[playerIndex])
-        {
-            case 0:
-                rankDisplay.text = "1st";
-                break;
-            case 1:
-                rankDisplay.text = "2nd";
-                break;
-            case 2:
-                rankDisplay.text = "3rd";
-                break;
-            case 3:
-                rankDisplay.text = "4th";
-                break;
-        }
+        // switch (LevelProgressionManager.instance.playersRank[playerIndex])
+        // {
+        //     case 0:
+        //         rankDisplay.text = "1st";
+        //         break;
+        //     case 1:
+        //         rankDisplay.text = "2nd";
+        //         break;
+        //     case 2:
+        //         rankDisplay.text = "3rd";
+        //         break;
+        //     case 3:
+        //         rankDisplay.text = "4th";
+        //         break;
+        // }
     }
 
-    private void Start()
+    public void StartGoalSearch(Transform transform)
     {
-        goal = LevelProgressionManager.instance.goalCircles[0].transform;
+        goal = transform;
     }
 
     public void AttachToPlayer(PlayerIdentity identity)

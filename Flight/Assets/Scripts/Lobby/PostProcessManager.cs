@@ -7,7 +7,7 @@ public class PostProcessManager : MonoSingleton<PostProcessManager>
 {
     private Volume currentVolume;
 
-    [SerializeField] private Volume[] volumes;
+    public Volume[] volumes;
 
     private void Start()
     {

@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float holdSpeed;
 
     private bool inGame;
+    private bool inEndGameMenu;
 
     public Vector2 moveAxis, cameraAxis;
 
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isWaitingToHold) RefreshStartGauge(Time.deltaTime);
         if (inGame) ExecuteState();
+        if (inEndGameMenu) RefreshRestartGauge(Time.deltaTime);
     }
 
 
@@ -130,12 +132,28 @@ public class PlayerController : MonoBehaviour
         if (!isHolding) delta = -delta;
         holdTimer += delta * holdSpeed;
         holdTimer = math.clamp(holdTimer, 0, 1);
+        
         LobbyUIManager.instance.RefreshReadyGaugeGUI(index, holdTimer);
-
+        
         // We only check on player 1
         if (index == 0)
         {
             ConnectionManager.instance.TryStartGame();
+        }
+    }
+    
+    private void RefreshRestartGauge(float delta)
+    {
+        if (!isHolding) delta = -delta;
+        holdTimer += delta * holdSpeed;
+        holdTimer = math.clamp(holdTimer, 0, 1);
+        
+        PostGameSceenManager.instance.RefreshReadyGaugeGUI(index, holdTimer);
+        
+        // We only check on player 1
+        if (index == 0)
+        {
+            ConnectionManager.instance.TryToGoMenu();
         }
     }
 
@@ -185,6 +203,12 @@ public class PlayerController : MonoBehaviour
         SwitchState(State.GLIDE);
 
         inGame = true;
+    }
+
+    public void SetPlayerInMenu()
+    {
+        inGame = false;
+        inEndGameMenu = true;
     }
 
     private void ExecuteState()

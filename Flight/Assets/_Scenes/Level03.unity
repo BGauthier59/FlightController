@@ -2845,7 +2845,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &289107465
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9557,7 +9557,7 @@ MonoBehaviour:
   - {fileID: 1796779284}
   - {fileID: 780165169}
   players: []
-  numberToWin: 2
+  numberToWin: 5
   player1points: 0
   player2points: 0
   postGameManager: {fileID: 1629476715}
@@ -15565,9 +15565,11 @@ MonoBehaviour:
   - statusText: {fileID: 785688856}
     scoreText: {fileID: 618067237}
     image: {fileID: 1967309323}
+    readyGauge: {fileID: 288060138}
   - statusText: {fileID: 94637466}
     scoreText: {fileID: 529515914}
     image: {fileID: 1330807800}
+    readyGauge: {fileID: 1652973764}
 --- !u!1 &1645119957
 GameObject:
   m_ObjectHideFlags: 0
