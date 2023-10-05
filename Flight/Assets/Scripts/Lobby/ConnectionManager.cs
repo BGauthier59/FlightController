@@ -62,21 +62,23 @@ public class ConnectionManager : MonoSingleton<ConnectionManager>
         }
     }
 
-    public void TryToGoMenu()
+    public async void TryToGoMenu()
     {
         foreach (var pc in players)
         {
             if (!pc.playerController.IsHoldingComplete()) return;
         }
 
-        SceneManager.LoadScene(0);
-        
         foreach (var pc in players)
         {
-            pc.playerController.SetReadyToSelect();
+            pc.playerController.HoldCompleted();
         }
-    }
 
+        await PostGameSceenManager.instance.EndLevel();
+        
+        SceneManager.LoadScene(0);
+    }
+    
     public PlayerIdentity[] GetPlayers()
     {
         return players.ToArray();
