@@ -238,23 +238,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
+      m_SelectedIDs: 06101b00
       m_LastClickedID: 0
-      m_ExpandedIDs: c80a91ffa6ae91ffac2192ff865f92ff6c9792ff009892fffa5198ffd6fd98ff5c439dff80bf9eff7e6fa2ff8c7ca4ff262da5ff96cea7ffcce5aaff0250b1ff4afab1ff7c08b7ffb272bdff0291c0ff5003c3ffa42dc3ff569ac9ff922fd8ff6c0deeff280eeeff340eeeff1c15eeff5e21eeff366deeff6025f1ff10dff6ff1c90f7ff10fbffffce1d03005e1e0300a4390300563c0300903c03008adf06001ee9070082ce080072b30900cec4090030c80a004a1f0b0078950f008a811000f28110006a821000ca821000ec821000a8831000324d1600365a1600
+      m_ExpandedIDs: 4aee51ff1c2952ff32e657ffa29966ff3e186cffc80a91ffa6ae91ffac2192ff865f92ff6c9792ff009892fffa5198ffd6fd98ff5c439dff80bf9eff7e6fa2ff8c7ca4ff262da5ff96cea7ffcce5aaff0250b1ff4afab1ff7c08b7ffb272bdff0291c0ff5003c3ffa42dc3ff569ac9ff922fd8ff6c0deeff280eeeff340eeeff1c15eeff5e21eeff366deeff6025f1ff10dff6ff1c90f7ff10fbffffce1d03005e1e0300a4390300563c0300903c03008adf06001ee9070082ce080072b30900cec4090030c80a004a1f0b0078950f008a811000f28110006a821000ca821000ec821000a8831000324d1600365a1600b6cf1a0046d01a007a0d1b00dc0e1b000c0f1b00
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: 
-        m_OriginalName: 
+        m_Name: Text (TMP)
+        m_OriginalName: Text (TMP)
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 0
+        m_UserData: 1772902
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 11
+        m_OriginalEventType: 0
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 5}
       m_SearchString: 
@@ -687,9 +687,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -2.6442542, y: 3.2951946, z: -3.7602873}
+    m_Target: {x: 2.8610253, y: 11.476102, z: -15.39438}
     speed: 2
-    m_Value: {x: -2.6442542, y: 3.2951946, z: -3.7602873}
+    m_Value: {x: 2.8610253, y: 11.476102, z: -15.39438}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -735,13 +735,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.0044916533, y: -0.97452873, z: 0.2233631, w: 0.019596659}
+    m_Target: {x: -0.0030078175, y: -0.9968936, z: 0.048197273, w: -0.062281065}
     speed: 2
-    m_Value: {x: 0.00449165, y: -0.974528, z: 0.22336294, w: 0.019596644}
+    m_Value: {x: -0.0030078061, y: -0.99688977, z: 0.04819709, w: -0.062280826}
   m_Size:
-    m_Target: 8.262221
+    m_Target: 5.003179
     speed: 2
-    m_Value: 8.262221
+    m_Value: 5.003179
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -830,7 +830,7 @@ MonoBehaviour:
     m_SaveData: []
     m_OverlaysVisible: 1
   m_SearchFilter:
-    m_NameFilter: FALL
+    m_NameFilter: 
     m_ClassNames: []
     m_AssetLabels: []
     m_AssetBundleNames: []
@@ -840,24 +840,24 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Art/Materials/Body
+    - Assets/Sprites
     m_Globs: []
-    m_OriginalText: FALL
+    m_OriginalText: 
     m_ImportLogFlags: 0
     m_FilterByTypeIntersection: 0
   m_ViewMode: 1
   m_StartGridSize: 56
   m_LastFolders:
-  - Assets/Art/Materials/Body
+  - Assets/Sprites
   m_LastFoldersGridSize: 56
   m_LastProjectPath: D:\RUBIKA\Repositories\FlightRepository\Flight
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 63}
-    m_SelectedIDs: c01e1700
-    m_LastClickedID: 1515200
-    m_ExpandedIDs: 00000000d2040300d4040300d6040300d8040300da0403000a0503003413070000ca9a3bffffff7f
+    scrollPos: {x: 0, y: 479}
+    m_SelectedIDs: 28050300
+    m_LastClickedID: 197928
+    m_ExpandedIDs: 00000000d2040300d4040300d6040300d8040300da0403000a0503003805030042c11b0044c11b0046c11b0048c11b0000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -910,10 +910,10 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 
-    m_LastClickedInstanceID: 0
+    m_SelectedInstanceIDs: 06101b00
+    m_LastClickedInstanceID: 1773574
     m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: c6230000146e0000
+    m_ExpandedInstanceIDs: c6230000146e0000dc1c030006101b00
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
