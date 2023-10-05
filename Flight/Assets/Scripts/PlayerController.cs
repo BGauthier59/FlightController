@@ -132,24 +132,24 @@ public class PlayerController : MonoBehaviour
         if (!isHolding) delta = -delta;
         holdTimer += delta * holdSpeed;
         holdTimer = math.clamp(holdTimer, 0, 1);
-        
+
         LobbyUIManager.instance.RefreshReadyGaugeGUI(index, holdTimer);
-        
+
         // We only check on player 1
         if (index == 0)
         {
             ConnectionManager.instance.TryStartGame();
         }
     }
-    
+
     private void RefreshRestartGauge(float delta)
     {
         if (!isHolding) delta = -delta;
         holdTimer += delta * holdSpeed;
         holdTimer = math.clamp(holdTimer, 0, 1);
-        
+
         PostGameSceenManager.instance.RefreshReadyGaugeGUI(index, holdTimer);
-        
+
         // We only check on player 1
         if (index == 0)
         {
@@ -184,7 +184,7 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    private enum State
+    public enum State
     {
         WALK,
         JUMP,
@@ -196,6 +196,10 @@ public class PlayerController : MonoBehaviour
 
     #region Controller In Game
 
+    public State GetState()
+    {
+        return currentState;
+    }
     public void SetPlayerInGame(Vector3 position)
     {
         transform.position = position;
@@ -236,7 +240,7 @@ public class PlayerController : MonoBehaviour
 
     private void SwitchState(State current)
     {
-        canLand = false;
+        SetCanLand(false);
 
         switch (current)
         {
@@ -288,15 +292,16 @@ public class PlayerController : MonoBehaviour
 
     private void RotateWalk()
     {
-        transform.rotation =
-            Quaternion.Euler(0, transform.eulerAngles.y + moveAxis.x * walkRotateSpeed * Time.deltaTime, 0);
+        transform.rotation = Quaternion.Euler(0,
+            transform.eulerAngles.y + moveAxis.x * walkRotateSpeed * Time.deltaTime, 0);
     }
 
     private void CheckGroundOnWalk()
     {
-        if (Physics.Raycast(rayOrigin.position, down, out hit, distanceToLand, ground))
+        // Is there a ground?
+        if (Physics.Raycast(rayOrigin.position, down, out hit, .55f, ground))
         {
-            return; // Sol
+            return;
         }
 
         SwitchState(State.GLIDE);
@@ -311,12 +316,12 @@ public class PlayerController : MonoBehaviour
     private float jumpTimer;
     [SerializeField] private float jumpHeight;
     private float currentJumpHeight;
-    [SerializeField] private float rotateCorrectionFactor, decelerationFactor;
+    [SerializeField] private float rotateCorrectionFactor;
+    [SerializeField] private AnimationCurve jumpBoost;
 
     private void ToJump()
     {
-        // Changer vitesse
-        glideSpeed /= decelerationFactor;
+        glideSpeed += jumpBoost.Evaluate(ratioSpeed);
         isJumping = true;
 
         currentJumpHeight = jumpHeight;
@@ -338,8 +343,7 @@ public class PlayerController : MonoBehaviour
             currentJumpHeight = math.lerp(jumpHeight, 0, jumpTimer / jumpDuration);
             transform.position += transform.forward * (glideSpeed * Time.deltaTime) +
                                   Vector3.up * (currentJumpHeight * Time.deltaTime);
-            transform.rotation = Quaternion.Lerp(initRotation, finalRotation,
-                (jumpTimer / jumpDuration) * rotateCorrectionFactor);
+            //transform.rotation = Quaternion.Lerp(initRotation, finalRotation, (jumpTimer / jumpDuration) * rotateCorrectionFactor);
             jumpTimer += Time.deltaTime;
         }
     }
@@ -357,37 +361,39 @@ public class PlayerController : MonoBehaviour
     private Vector3 down = Vector3.down;
 
     public Rigidbody rb;
-
+    [SerializeField] private float dotToleranceAngle;
+    [SerializeField] private Transform rotationLooker;
+    
     private void ToGlide()
     {
-        glideSpeed *= decelerationFactor;
-
         identity.ChangeAnimation(Anim.Glide);
-        // Feedbacks
     }
 
     private void Glide()
     {
-        // Execute
         RotateGlide();
-
+        
         float dot = math.dot(transform.forward, down);
-
         EvaluateGlideSpeed(dot);
 
         rb.position += transform.forward * (glideSpeed * Time.deltaTime);
 
         // Check conditions
-
         CheckGroundOnGlide();
     }
 
     private void RotateGlide()
     {
-        rb.rotation = Quaternion.Euler(
-            transform.eulerAngles.x + moveAxis.y * glideRotateSpeed.x * Time.deltaTime
-                                    + attractionOverSpeed.Evaluate(ratioSpeed) * Time.deltaTime * attractionFactor,
+        // Calculate rotation
+        Quaternion next = Quaternion.Euler(
+            transform.eulerAngles.x + moveAxis.y * glideRotateSpeed.x * Time.deltaTime +
+            attractionOverSpeed.Evaluate(ratioSpeed) * Time.deltaTime * attractionFactor,
             transform.eulerAngles.y + moveAxis.x * glideRotateSpeed.y * Time.deltaTime, 0);
+
+        // Evaluate rotation and prevent pigeon from rotating more than possible
+        rotationLooker.rotation = next;
+        float dot = math.dot(rotationLooker.forward, Vector3.up);
+        if (math.abs(dot) < dotToleranceAngle) rb.rotation = next;
     }
 
     private void EvaluateGlideSpeed(float dot)
@@ -458,37 +464,34 @@ public class PlayerController : MonoBehaviour
     {
         rayDirection = (transform.forward + down);
 
+        // Is there a ground?
         if (!Physics.Raycast(rayOrigin.position, rayDirection, out hit, distanceToLand, ground))
         {
-            Debug.DrawRay(rayOrigin.position, rayDirection * distanceToLand, Color.green);
-            tutorialText.SetActive(false);
-
-            return; // Pas de sol
+            SetCanLand(false);
+            return;
         }
 
         float dot = math.dot(Vector3.up, hit.normal);
         if (dot < .9f) return;
-
-        Debug.DrawRay(rayOrigin.position, rayDirection * distanceToLand, Color.red);
-
-        if (hit.distance > securityDistanceToLand) // Arrêt possible
+        
+        // You can land
+        if (hit.distance > securityDistanceToLand) 
         {
-            EnableLandingFeedback();
-            canLand = true;
-            tutorialText.SetActive(true);
+            SetCanLand(true);
         }
-        else // Arrêt forcé
+        // You must land
+        else
         {
-            tutorialText.SetActive(false);
             SwitchState(State.LAND);
         }
     }
 
-    private void EnableLandingFeedback()
+    private void SetCanLand(bool can)
     {
-        // Feedback
-        Debug.Log("tu peux aterrir");
+        canLand = can;
+        tutorialText.SetActive(can);
     }
+    
 
     #endregion
 

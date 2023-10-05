@@ -147,6 +147,7 @@ MonoBehaviour:
   cam: {fileID: 7131701031355039374}
   fieldOfViewBounds: {x: 60, y: 100}
   axisRot: 0
+  speed: 50
 --- !u!1 &2280925618073512905
 GameObject:
   m_ObjectHideFlags: 0
@@ -325,6 +326,7 @@ MonoBehaviour:
   cam: {fileID: 4123805362759292274}
   fieldOfViewBounds: {x: 60, y: 100}
   axisRot: 0
+  speed: 50
 --- !u!1 &4002428576932897367
 GameObject:
   m_ObjectHideFlags: 0

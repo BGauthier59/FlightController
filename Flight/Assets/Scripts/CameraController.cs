@@ -28,6 +28,9 @@ public class CameraController : MonoBehaviour
         
         transform.rotation = identity.transform.rotation;
         transform.position = identity.transform.position + (rot * offset);
+
+        if (identity.playerController.GetState() == PlayerController.State.JUMP) return;
+        
         cam.fieldOfView = Mathf.Lerp(cam.fieldOfView,
             Mathf.Lerp(fieldOfViewBounds.x, fieldOfViewBounds.y,
                 Mathf.InverseLerp(0, identity.playerController.glideMaxSpeed, identity.playerController.glideSpeed)),
