@@ -16,6 +16,7 @@ public class PlayerIdentity : MonoBehaviour
 
     public async void ChangeAnimation(Anim anim)
     {
+        // Pour changer le state de l'animator 
         switch (anim)
         {
             case Anim.Glide:
@@ -43,6 +44,7 @@ public class PlayerIdentity : MonoBehaviour
 
     public void ChangeBody(int i)
     {
+        // On change l'apparence du joueur en fonction de si c'est le J1 ou J2
         if (i == 0)
         {
             for (int j = 0; j < player1Body.Length; j++)

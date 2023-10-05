@@ -19,6 +19,8 @@ public class CameraController : MonoBehaviour
     
     private void LateUpdate()
     {
+        
+        // Fonction de mouvement de la caméra et du pigeon lors des rotations
         axisRot = Mathf.Lerp(axisRot, -identity.playerController.moveAxis.x, Time.deltaTime * 2);
         
         identity.visuals.localRotation = Quaternion.Euler(0,0,axisRot * 60);

@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class LevelProgressionManager : MonoBehaviour
 {
+    // SCRIPT PLUS UTILISé MAIS A GARDER AU CAS OU 
+    
+    
     public int numberOfPlayers;
     public PlayerIdentity[] players;
     public int[] playersStep;
@@ -15,15 +18,7 @@ public class LevelProgressionManager : MonoBehaviour
     {
         instance = this;
     }
-
-    public void PlayerGetGoal(int player,int goal)
-    {
-        if (playersStep[player] == goal-1)
-        {
-            playersStep[player]++;
-            if(playersStep[player] != goalCircles.Length) players[player].uiManager.goal = goalCircles[playersStep[player]].transform;
-        }
-    }
+    
 
     private void Update()
     {

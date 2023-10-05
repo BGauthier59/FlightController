@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class GoalCircle : MonoBehaviour
 {
-    public float speedBoost;
-    public int goalIndex;
-    public GameObject bubbles;
+    [SerializeField] private float speedBoost;
+    [SerializeField] private GameObject bubbles;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))

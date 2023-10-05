@@ -4,16 +4,13 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class CarBehavior : MonoBehaviour
+public class WagonBehavior : MonoBehaviour
 {
-
-    public int previous,next;
-    public float speed, distBetweenNodes,index;
-    public List<Vector3> distancedNodes;
-    public float completion;
-    public float upVector = 1.2f;
-  
-
+    [SerializeField] private int previous,next;
+    [SerializeField] private float speed,index;
+    [SerializeField] private List<Vector3> distancedNodes;
+    [SerializeField] private float completion;
+    [SerializeField] private float upVector = 1.2f;
     void Update()
     {
         completion += Time.deltaTime * speed;
@@ -34,6 +31,5 @@ public class CarBehavior : MonoBehaviour
         
         transform.position = Vector3.Lerp(distancedNodes[previous], distancedNodes[next], index)+Vector3.up*upVector;
         transform.rotation = Quaternion.Lerp(transform.rotation,Quaternion.LookRotation(distancedNodes[next] - distancedNodes[previous]),Time.deltaTime*5);
-        
     }
 }
