@@ -178,9 +178,6 @@ public class PlayerController : MonoBehaviour
     public void SetPlayerInGame(Vector3 position)
     {
         transform.position = position;
-
-        SwitchState(State.GLIDE);
-
         inGame = true;
     }
     

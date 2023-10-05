@@ -9897,7 +9897,6 @@ MonoBehaviour:
   previous: 0
   next: 0
   speed: 0.05
-  distBetweenNodes: 0
   index: 0
   distancedNodes:
   - {x: 125.74842, y: 14.26, z: 56.4806}
@@ -12867,17 +12866,11 @@ MonoBehaviour:
   - {fileID: 1186483298}
   - {fileID: 318883011}
   - {fileID: 1565813834}
-  wagon: {fileID: 0}
-  previous: 0
-  next: 0
-  index: 0
-  speed: 0
   generateRail: 0
   generatePlank: 0
   addNewPoint: 0
   removeLastPoint: 0
   railPoint: {fileID: 0}
-  modeForm: 0
   formPoint: {fileID: 0}
 --- !u!23 &463064762
 MeshRenderer:
@@ -15792,7 +15785,6 @@ MonoBehaviour:
   previous: 0
   next: 0
   speed: 0.05
-  distBetweenNodes: 0
   index: 0
   distancedNodes:
   - {x: 125.74842, y: 14.26, z: 56.4806}
@@ -26994,7 +26986,6 @@ MonoBehaviour:
   previous: 0
   next: 0
   speed: 0.05
-  distBetweenNodes: 0
   index: 0
   distancedNodes:
   - {x: 125.74842, y: 14.26, z: 56.4806}
@@ -44569,7 +44560,7 @@ PrefabInstance:
     - target: {fileID: 7330621747033099879, guid: 2193afe490ca4834693be2309b704c2d,
         type: 3}
       propertyPath: numberToWin
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7330621747033099879, guid: 2193afe490ca4834693be2309b704c2d,
         type: 3}
@@ -60647,17 +60638,11 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  wagon: {fileID: 0}
-  previous: 0
-  next: 0
-  index: 0
-  speed: 0
   generateRail: 0
   generatePlank: 0
   addNewPoint: 0
   removeLastPoint: 0
   railPoint: {fileID: 0}
-  modeForm: 0
   formPoint: {fileID: 0}
 --- !u!23 &936303527819072037
 MeshRenderer:
@@ -64075,7 +64060,6 @@ MonoBehaviour:
   previous: 0
   next: 0
   speed: 0.05
-  distBetweenNodes: 0
   index: 0
   distancedNodes:
   - {x: 125.74842, y: 14.26, z: 56.4806}
