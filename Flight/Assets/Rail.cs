@@ -27,21 +27,12 @@ public class Rail : MonoBehaviour
     public Transform plankParent;
     public List<GameObject> planks;
 
-    [Header("Wagon")] 
-    public Transform wagon;
-    public int previous;
-    public int next;
-    public float index;
-    public float speed;
-
     [Header("Tool")] 
     [SerializeField] private bool generateRail;
     [SerializeField] private bool generatePlank;
     public bool addNewPoint;
     public bool removeLastPoint;
     [SerializeField] private GameObject railPoint;
-    public bool modeForm;
-    private bool form;
     [SerializeField] private GameObject formPoint;
 
 
@@ -53,25 +44,10 @@ public class Rail : MonoBehaviour
         GeneratePlank();
     }
 
-    private void Update()
-    {
-        if (index < 1)
-        {
-            index +=( Time.deltaTime * speed )/ distBetweenNodes;
-        }
-        else
-        {
-            previous = next;
-            next = (next + 1) % distancedNodes.Count;
-            index = 0;
-        }
-        wagon.position = Vector3.Lerp(distancedNodes[previous], distancedNodes[next], index)+Vector3.up*1.2f;
-        wagon.rotation = Quaternion.Lerp(wagon.rotation,Quaternion.LookRotation(distancedNodes[next] - distancedNodes[previous]),Time.deltaTime*5);
-        
-    }
-
     private void OnDrawGizmos()
     {
+        // Pendant les DrawGizmos, on viens activer chaque fonction d'éditeur ( plus simple que de faire un script editeur )
+        
         DrawRailPoints();
         CreateDistancedNodes();
         foreach (Vector3 pos in distancedNodes)
@@ -99,61 +75,11 @@ public class Rail : MonoBehaviour
             RemoveLastPoint();
             removeLastPoint = false;
         }
-
-        if (modeForm)
-        {
-            if (!form)
-            {
-                form = true;
-                EnterFormMode();
-            }
-
-            FormMode();
-
-        }
-        else
-        {
-            if (form)
-            {
-                form = false;
-                ExitFormMode();
-            }
-        }
+        
     }
-
-    void EnterFormMode()
-    {
-        for (int i = 0; i < railPoints.Count; i++)
-        {
-            GameObject obj = Instantiate(formPoint, railPoints[i].nextHandle.position, quaternion.identity, transform);
-            obj.name = "PolygonEdge" + i;
-            forms.Add(obj.transform);
-        }
-    }
-    
-    void ExitFormMode()
-    {
-        foreach (Transform obj in forms)
-        {
-            DestroyImmediate(obj.gameObject);
-        }
-        forms.Clear();
-    }
-
-    void FormMode()
-    {
-        for (int i = 0; i < railPoints.Count; i++)
-        {
-            railPoints[i].nextHandle.position = forms[i].position;
-            if(i > 0)  railPoints[i].previousHandle.position = forms[i-1].position;
-            else railPoints[i].previousHandle.position = forms[forms.Count-1].position;
-
-            railPoints[i].point.position = (railPoints[i].nextHandle.position + railPoints[i].previousHandle.position) / 2;
-        }
-    }
-
     void AddNewPoint()
     {
+        // Ajoute un point a la courbe de Bezier
         GameObject obj = Instantiate(railPoint, transform.position, quaternion.identity,transform);
         obj.name = "Point" + railPoints.Count;
         RailPoint newPoint = new RailPoint();
@@ -161,22 +87,19 @@ public class Rail : MonoBehaviour
         newPoint.previousHandle = obj.transform.GetChild(0);
         newPoint.nextHandle = obj.transform.GetChild(1);
         railPoints.Add(newPoint);
-        if (modeForm)
-        {
-            GameObject objPoly = Instantiate(formPoint, railPoints[railPoints.Count-1].nextHandle.position, quaternion.identity, transform);
-            objPoly.name = "PolygonEdge" + (railPoints.Count-1);
-            forms.Add(objPoly.transform);
-        }
     }
     
     void RemoveLastPoint()
     {
+        // Enleve un point a la courbe de Bezier
         DestroyImmediate(railPoints[railPoints.Count - 1].point.gameObject);
         railPoints.RemoveAt(railPoints.Count - 1);
     }
 
     void GeneratePlank()
     {
+        
+        // On instantie des planches a chaque node de la courbe de bezier
         foreach (GameObject obj in planks)
         { 
             DestroyImmediate(obj);
@@ -207,6 +130,8 @@ public class Rail : MonoBehaviour
 
     Mesh GenerateRail()
     {
+        
+        // Renvoie le mesh procédural des rails
         Mesh mesh = new Mesh();
 
         List<Vector3> vertices = new List<Vector3>(0);
@@ -303,6 +228,7 @@ public class Rail : MonoBehaviour
     
     void CreateDistancedNodes()
     {
+        // On place des nodes a distance fixes sur la courbe de bezier 
         if (distBetweenNodes <= 0) return;
         distancedNodes.Clear();
         distancedNodes.Add(railPoints[0].point.position);
@@ -351,6 +277,7 @@ public class Rail : MonoBehaviour
     
     private void DrawRailPoints()
     {
+        // On place des points sur la courbe de bezier qui vont definir la trajectoire générale
         pointsOnCurve.Clear();
         for (int i = 0; i < railPoints.Count-1; i++)
         {
