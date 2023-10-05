@@ -1426,7 +1426,7 @@ MonoBehaviour:
   - {fileID: 0}
   circleShuffle: []
   players: []
-  numberToWin: 1
+  numberToWin: 10
   player1points: 0
   player2points: 0
   postGameManager: {fileID: 5311906308965307596}
