@@ -17,23 +17,24 @@ public class LevelGamemode : MonoBehaviour
     public void StartLevel()
     {
         player1points = player2points = 0;
-        DisplayCircle();
-    }
-
-    private void DisplayCircle()
-    {
+        
         foreach (var goal in goalCircleList)
         {
             goal.gameObject.SetActive(false);
         }
         
+        DisplayCircle();
+    }
+
+    private void DisplayCircle()
+    {
         var rand = (int)Random.Range(0, goalCircleList.Length);
 
         goalCircleList[rand].gameObject.SetActive(true);
         
         foreach (var p in players)
         {
-            p.uiManager.StartGoalSearch(goalCircleList[rand].transform);
+            p.uiManager.StartGoalSearch(goalCircleList[rand].transform, player1points, player2points, numberToWin);
         }
     }
 
@@ -42,6 +43,8 @@ public class LevelGamemode : MonoBehaviour
         if (i == 0) player1points++;
         else player2points++;
 
+        Debug.Log($"Point for player {i + 1}");
+        
         DisplayCircle();
         
         CheckWin();
@@ -49,21 +52,26 @@ public class LevelGamemode : MonoBehaviour
 
     private void CheckWin()
     {
-        var players = ConnectionManager.instance.GetPlayers();
-        for (int i = 0; i < players.Length; i++)
-        {
-            players[i].playerController.SetPlayerInMenu();
-        }
-        
         if (player1points >= numberToWin)
         {
             Debug.Log("Player 1 Win");
-            postGameManager.DisplayWinner(0,player1points, player2points );
+            postGameManager.DisplayWinner(0);
+            StopGameMode();
         }
         else if (player2points >= numberToWin)
         {
             Debug.Log("Player 2 Win");
-            postGameManager.DisplayWinner(1,player1points, player2points );
+            postGameManager.DisplayWinner(1);
+            StopGameMode();
+        }
+    }
+
+    private void StopGameMode()
+    {
+        var players = ConnectionManager.instance.GetPlayers();
+        for (int i = 0; i < players.Length; i++)
+        {
+            players[i].playerController.SetPlayerInMenu();
         }
     }
 }
