@@ -43,7 +43,7 @@ Camera:
   m_GameObject: {fileID: 1245233944283374094}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0.6745283, g: 0.949145, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -147,7 +147,6 @@ MonoBehaviour:
   cam: {fileID: 7131701031355039374}
   fieldOfViewBounds: {x: 60, y: 100}
   axisRot: 0
-  speed: 50
 --- !u!1 &2280925618073512905
 GameObject:
   m_ObjectHideFlags: 0
@@ -222,7 +221,7 @@ Camera:
   m_GameObject: {fileID: 2586340232114998883}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0.6745283, g: 0.949145, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -326,7 +325,6 @@ MonoBehaviour:
   cam: {fileID: 4123805362759292274}
   fieldOfViewBounds: {x: 60, y: 100}
   axisRot: 0
-  speed: 50
 --- !u!1 &4002428576932897367
 GameObject:
   m_ObjectHideFlags: 0
