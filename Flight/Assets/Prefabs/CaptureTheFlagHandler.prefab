@@ -666,6 +666,9 @@ MonoBehaviour:
   menuTransitionDuration: 1.5
   objectToDisable:
   - {fileID: 0}
+  colors:
+  - {r: 1, g: 0.7137255, b: 0.3647059, a: 0.78431374}
+  - {r: 0.99215686, g: 0.36862746, b: 0.9607843, a: 0.78431374}
   postGameCamSlidingDuration: 4.5
 --- !u!1 &3994628632292145505
 GameObject:
@@ -1409,8 +1412,20 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   players: []
-  numberToWin: 1
+  numberToWin: 10
   player1points: 0
   player2points: 0
   postGameManager: {fileID: 5311906308965307596}
