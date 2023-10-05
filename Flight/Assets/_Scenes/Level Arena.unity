@@ -44568,6 +44568,11 @@ PrefabInstance:
       objectReference: {fileID: 1846745823}
     - target: {fileID: 7330621747033099879, guid: 2193afe490ca4834693be2309b704c2d,
         type: 3}
+      propertyPath: numberToWin
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7330621747033099879, guid: 2193afe490ca4834693be2309b704c2d,
+        type: 3}
       propertyPath: goalCircleList.Array.data[0]
       value: 
       objectReference: {fileID: 1125561050}

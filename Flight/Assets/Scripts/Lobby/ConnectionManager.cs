@@ -54,9 +54,9 @@ public class ConnectionManager : MonoSingleton<ConnectionManager>
         LobbyUIManager.instance.ExitLobbyGUI();
         await PostProcessManager.instance.SwitchVolume(.5f, 1);
         await LobbyCameraManager.instance.MoveToBookmark(1, 1);
-
         await PostProcessManager.instance.SwitchVolume(.5f, 0);
 
+        // Enable selection
         foreach (var pc in players)
         {
             pc.playerController.SetReadyToSelect();
@@ -76,6 +76,12 @@ public class ConnectionManager : MonoSingleton<ConnectionManager>
         }
 
         await PostGameSceenManager.instance.EndLevel();
+        
+        for (int i = players.Count - 1; i >= 0; i--)
+        {
+            Destroy(players[i].gameObject);
+        }
+        players.Clear();
         
         SceneManager.LoadScene(0);
     }

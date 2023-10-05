@@ -17,8 +17,8 @@ public class LevelsManager : MonoSingleton<LevelsManager>
     private Level current;
     private int currentIndex;
 
-    public SpriteRenderer levelDisplay;
-    public TMP_Text levelName;
+    [SerializeField] private SpriteRenderer levelDisplay;
+    [SerializeField] private TMP_Text levelName;
 
     private void Start()
     {
@@ -50,6 +50,8 @@ public class LevelsManager : MonoSingleton<LevelsManager>
 
     public async void SelectLevel()
     {
+        if (current.sceneIndex == -1) return; // Can't access those levels
+        
         var players = ConnectionManager.instance.GetPlayers();
         foreach (var pc in players)
         {

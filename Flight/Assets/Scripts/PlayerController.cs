@@ -3,22 +3,21 @@ using System.Threading.Tasks;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 public class PlayerController : MonoBehaviour
 {
     private int index;
+    
+    public Vector2 moveAxis;
 
     [SerializeField] private PlayerIdentity identity;
+    [SerializeField] private float holdSpeed;
+    
     private bool isWaitingToHold, isHolding, isSelectingLevel;
     private float holdTimer;
-    [SerializeField] private float holdSpeed;
-
     private bool inGame;
     private bool inEndGameMenu;
-
-    public Vector2 moveAxis, cameraAxis;
-
+    
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
@@ -30,7 +29,6 @@ public class PlayerController : MonoBehaviour
         if (inGame) ExecuteState();
         if (isWaitingToHold && inEndGameMenu) RefreshRestartGauge(Time.deltaTime);
     }
-
 
     #region Input Action Events
 
@@ -44,18 +42,6 @@ public class PlayerController : MonoBehaviour
         }
 
         moveAxis = ctx.ReadValue<Vector2>();
-    }
-
-    public void OnMoveCamera(InputAction.CallbackContext ctx)
-    {
-        if (!inGame) return;
-        if (ctx.canceled)
-        {
-            cameraAxis = Vector2.zero;
-            return;
-        }
-
-        cameraAxis = ctx.ReadValue<Vector2>();
     }
 
     public void OnSwitchLeft(InputAction.CallbackContext ctx)
@@ -142,21 +128,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void RefreshRestartGauge(float delta)
-    {
-        if (!isHolding) delta = -delta;
-        holdTimer += delta * holdSpeed;
-        holdTimer = math.clamp(holdTimer, 0, 1);
-
-        PostGameSceenManager.instance.RefreshReadyGaugeGUI(index, holdTimer);
-
-        // We only check on player 1
-        if (index == 0)
-        {
-            ConnectionManager.instance.TryToGoMenu();
-        }
-    }
-
     public bool IsHoldingComplete()
     {
         return holdTimer >= 1;
@@ -203,6 +174,7 @@ public class PlayerController : MonoBehaviour
     {
         return currentState;
     }
+
     public void SetPlayerInGame(Vector3 position)
     {
         transform.position = position;
@@ -211,13 +183,7 @@ public class PlayerController : MonoBehaviour
 
         inGame = true;
     }
-
-    public void SetPlayerInMenu()
-    {
-        inGame = false;
-        inEndGameMenu = true;
-    }
-
+    
     private void ExecuteState()
     {
         if (!inGame) return;
@@ -319,7 +285,6 @@ public class PlayerController : MonoBehaviour
     private float jumpTimer;
     [SerializeField] private float jumpHeight;
     private float currentJumpHeight;
-    [SerializeField] private float rotateCorrectionFactor;
     [SerializeField] private AnimationCurve jumpBoost;
 
     private void ToJump()
@@ -346,8 +311,9 @@ public class PlayerController : MonoBehaviour
             float factor = Mathf.Clamp01(1 - (transform.position.y - 2) / 3);
             currentJumpHeight = math.lerp(jumpHeight, 0, jumpTimer / jumpDuration);
             transform.position += transform.forward * (glideSpeed * Time.deltaTime) +
-                                  Vector3.up * (currentJumpHeight * Time.deltaTime) + transform.forward * (currentJumpHeight * Time.deltaTime*0.3f) + Vector3.up * factor * 20 * Time.deltaTime;
-            //transform.rotation = Quaternion.Lerp(initRotation, finalRotation, (jumpTimer / jumpDuration) * rotateCorrectionFactor);
+                                  Vector3.up * (currentJumpHeight * Time.deltaTime) +
+                                  transform.forward * (currentJumpHeight * Time.deltaTime * 0.3f) +
+                                  Vector3.up * factor * 20 * Time.deltaTime;
             jumpTimer += Time.deltaTime;
             RotateGlide();
         }
@@ -368,7 +334,7 @@ public class PlayerController : MonoBehaviour
     public Rigidbody rb;
     [SerializeField] private float dotToleranceAngle;
     [SerializeField] private Transform rotationLooker;
-    
+
     private void ToGlide()
     {
         identity.ChangeAnimation(Anim.Glide);
@@ -382,8 +348,8 @@ public class PlayerController : MonoBehaviour
         EvaluateGlideSpeed(dot);
 
         float factor = Mathf.Clamp01(1 - (transform.position.y - 2) / 3);
-        
-        rb.position += transform.forward * (glideSpeed * Time.deltaTime) + Vector3.up * factor * 20 * Time.deltaTime;
+
+        rb.position += transform.forward * (glideSpeed * Time.deltaTime) + Vector3.up * (factor * 20 * Time.deltaTime);
 
         // Check conditions
         CheckGroundOnGlide();
@@ -393,11 +359,12 @@ public class PlayerController : MonoBehaviour
     {
         // Calculates cloud force factor
         float factor = Mathf.Clamp01(1 - (transform.position.y - 2) / 3);
-        
+
         // Calculate rotation
         Quaternion next = Quaternion.Euler(
             transform.eulerAngles.x + moveAxis.y * glideRotateSpeed.x * Time.deltaTime +
-            attractionOverSpeed.Evaluate(ratioSpeed) * Time.deltaTime * attractionFactor - factor * Time.deltaTime * attractionFactor *2,
+            attractionOverSpeed.Evaluate(ratioSpeed) * Time.deltaTime * attractionFactor -
+            factor * Time.deltaTime * attractionFactor * 2,
             transform.eulerAngles.y + moveAxis.x * glideRotateSpeed.y * Time.deltaTime, 0);
 
         // Evaluate rotation and prevent pigeon from rotating more than possible
@@ -405,7 +372,7 @@ public class PlayerController : MonoBehaviour
         float dot = math.dot(rotationLooker.forward, Vector3.up);
         if (math.abs(dot) < dotToleranceAngle) rb.rotation = next;
     }
-    
+
 
     private void EvaluateGlideSpeed(float dot)
     {
@@ -484,9 +451,9 @@ public class PlayerController : MonoBehaviour
 
         float dot = math.dot(Vector3.up, hit.normal);
         if (dot < .9f) return;
-        
+
         // You can land
-        if (hit.distance > securityDistanceToLand) 
+        if (hit.distance > securityDistanceToLand)
         {
             SetCanLand(true);
         }
@@ -502,9 +469,34 @@ public class PlayerController : MonoBehaviour
         canLand = can;
         tutorialText.SetActive(can);
     }
-    
 
     #endregion
+
+    #endregion
+
+    #region Post Game
+
+    public void SetPlayerInMenu()
+    {
+        SetCanLand(false);
+        inGame = false;
+        inEndGameMenu = true;
+    }
+    
+    private void RefreshRestartGauge(float delta)
+    {
+        if (!isHolding) delta = -delta;
+        holdTimer += delta * holdSpeed;
+        holdTimer = math.clamp(holdTimer, 0, 1);
+
+        PostGameSceenManager.instance.RefreshReadyGaugeGUI(index, holdTimer);
+
+        // We only check on player 1
+        if (index == 0)
+        {
+            ConnectionManager.instance.TryToGoMenu();
+        }
+    }
 
     #endregion
 
