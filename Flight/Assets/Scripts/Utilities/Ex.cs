@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Ex : MonoBehaviour
@@ -15,4 +16,19 @@ public class Ex : MonoBehaviour
         Vector3 p6 = QuadraticBeziersCurve(p2, p3, p4, t);
         return Vector3.Lerp(p5, p6, t);
     }
+    
+    public static List<T> ShuffleList<T>(List<T> list)
+    {
+        List<T> rngList = new List<T>(0);
+        int x = list.Count;
+        for (int i = 0; i < x; i++)
+        {
+            int rng = Random.Range(0, list.Count);
+            rngList.Add(list[rng]);
+            list.RemoveAt(rng);
+        }
+        return rngList;
+    }
 }
+
+

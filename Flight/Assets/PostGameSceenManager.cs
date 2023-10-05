@@ -95,7 +95,6 @@ public class PostGameSceenManager : MonoBehaviour
         looserIdentity.transform.position = looserTransform.position;
         looserIdentity.transform.rotation = looserTransform.rotation;
         looserTextCanvas.SetActive(true);
-        looserTextCanvas.transform.GetChild(0).GetComponent<Image>().color = colors[looserIdentity.index];
         
         // VFx
         // Son
@@ -105,7 +104,6 @@ public class PostGameSceenManager : MonoBehaviour
         winnerIdentity.transform.position = winnerTransform.position;
         winnerIdentity.transform.rotation = winnerTransform.rotation;
         winnerTextCanvas.SetActive(true);
-        looserTextCanvas.transform.GetChild(0).GetComponent<Image>().color = colors[winnerIdentity.index];
         
         // Camera Shake
         // Vfx
@@ -122,7 +120,7 @@ public class PostGameSceenManager : MonoBehaviour
     {
         float timer = 0;
         
-        while (timer < menuTransitionDuration)
+        while (timer <= menuTransitionDuration)
         {
             foreach (var c in curtains)
             {
@@ -132,8 +130,6 @@ public class PostGameSceenManager : MonoBehaviour
             await Task.Yield();
             timer += Time.deltaTime;
         }
-
-        await Task.Delay(1000);
     }
     
     private int ReturnTheOtherPlayer(int index)

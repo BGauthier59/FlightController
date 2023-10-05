@@ -304,8 +304,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -960, y: 0}
-  m_SizeDelta: {x: 960, y: 1080}
+  m_AnchoredPosition: {x: -970, y: 0}
+  m_SizeDelta: {x: 970, y: 1080}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &1940885153178922759
 CanvasRenderer:
@@ -666,6 +666,9 @@ MonoBehaviour:
   menuTransitionDuration: 1.5
   objectToDisable:
   - {fileID: 0}
+  colors:
+  - {r: 1, g: 0.7137255, b: 0.3647059, a: 0.78431374}
+  - {r: 0.99215686, g: 0.36862746, b: 0.9607843, a: 0.78431374}
   postGameCamSlidingDuration: 4.5
 --- !u!1 &3994628632292145505
 GameObject:
@@ -1409,6 +1412,19 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  circleShuffle: []
   players: []
   numberToWin: 1
   player1points: 0
@@ -1540,7 +1556,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 960, y: 1080}
+  m_SizeDelta: {x: 970, y: 1080}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &1468634939555194390
 CanvasRenderer:
