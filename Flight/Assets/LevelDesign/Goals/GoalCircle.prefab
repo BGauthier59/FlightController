@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bf93f18a56f8234d9734e1ea7b7b07a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedBoost: 5
+  speedBoost: 10
   goalIndex: 1
 --- !u!54 &4337757146790630431
 Rigidbody:
