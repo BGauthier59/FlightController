@@ -11,6 +11,8 @@ public class PlayerIdentity : MonoBehaviour
     public CameraController cameraController;
     public Transform visuals, headBone;
     public Animator animator;
+    public GameObject[] player1Body;
+    public GameObject[] player2Body;
 
     public async void ChangeAnimation(Anim anim)
     {
@@ -36,6 +38,26 @@ public class PlayerIdentity : MonoBehaviour
                 if (playerController.GetState() == PlayerController.State.GLIDE) animator.SetInteger("Animation", 0);
                 else animator.SetInteger("Animation", 3);
                 break;
+        }
+    }
+
+    public void ChangeBody(int i)
+    {
+        if (i == 0)
+        {
+            for (int j = 0; j < player1Body.Length; j++)
+            {
+                player1Body[j].SetActive(true);
+                player2Body[j].SetActive(false);
+            }
+        }
+        else
+        {
+            for (int j = 0; j < player1Body.Length; j++)
+            {
+                player1Body[j].SetActive(false);
+                player2Body[j].SetActive(true);
+            }
         }
     }
 }
